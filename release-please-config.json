@@ -6,12 +6,11 @@
       "include-v-in-tag": false,
       "draft": true
     },
-    "chart": {
+    "charts/zigbee2mqtt": {
       "release-type": "helm",
       "include-component-in-tag": false,
       "include-v-in-tag": false,
-      "draft": true,
-      "path": "charts/zigbee2mqtt"
+      "draft": true
     }
   },
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
