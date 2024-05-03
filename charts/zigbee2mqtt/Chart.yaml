@@ -2,7 +2,7 @@ apiVersion: v2
 appVersion: 1.37.0-dev
 description: Bridges events and allows you to control your Zigbee devices via MQTT
 name: zigbee2mqtt
-version: 1.37.0-dev
+version: 1.38.0
 kubeVersion: ">=1.26.0-0"
 keywords:
   - zigbee
