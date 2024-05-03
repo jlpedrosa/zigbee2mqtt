@@ -17,6 +17,9 @@ jobs:
         token: ${{secrets.GH_TOKEN}}
     - uses: actions/checkout@v4
       if: ((github.ref == 'refs/heads/dev' || startsWith(github.ref, 'refs/tags/')) && github.event_name == 'push') == false
+      with:
+        # Required for `release: merge dev -> master and promote dev`
+        token: ${{secrets.GH_TOKEN}}
     - uses: actions/setup-node@v4
       with:
         node-version: 20
@@ -30,12 +33,6 @@ jobs:
       run: npm run test-with-coverage
     - name: Lint
       run: npm run eslint
-    - name: Docker login
-      if: (github.ref == 'refs/heads/dev' || startsWith(github.ref, 'refs/tags/')) && github.event_name == 'push'
-      run: echo ${{ secrets.DOCKER_KEY }} | docker login -u koenkk --password-stdin
-    - name: Docker login ghcr.io
-      if: (github.ref == 'refs/heads/dev' || startsWith(github.ref, 'refs/tags/')) && github.event_name == 'push'
-      run: echo ${{ secrets.GH_TOKEN }} | docker login ghcr.io -u koenkk --password-stdin
     - name: Docker setup - QEMU
       if: (github.ref == 'refs/heads/dev' || startsWith(github.ref, 'refs/tags/')) && github.event_name == 'push'
       uses: docker/setup-qemu-action@v3
@@ -70,32 +67,6 @@ jobs:
           --push \
           -t koenkk/zigbee2mqtt:latest -t "koenkk/zigbee2mqtt:$TAG" -t ghcr.io/koenkk/zigbee2mqtt:latest -t "ghcr.io/koenkk/zigbee2mqtt:$TAG" \
           .
-    - name: "release: Publish to npm"
-      if: startsWith(github.ref, 'refs/tags/') && github.event_name == 'push'
-      run: npm publish
-      env:
-        NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN }}
-    - name: "dev: Trigger zigbee2mqtt/hassio-zigbee2mqtt build"
-      if: github.ref == 'refs/heads/dev' && github.event_name == 'push'
-      run: |
-        curl \
-          -X POST \
-          -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
-          -H "Accept: application/vnd.github.v3+json" \
-          https://api.github.com/repos/zigbee2mqtt/hassio-zigbee2mqtt/actions/workflows/ci.yml/dispatches \
-          -d '{"ref":"master","inputs":{}}'
-    - name: "release: Trigger zigbee2mqtt/hassio-zigbee2mqtt build"
-      if: startsWith(github.ref, 'refs/tags/') && github.event_name == 'push'
-      run: |
-        TAG=${GITHUB_REF#refs/*/}
-        echo "Triggering with tag '$TAG'"
-        curl \
-          -X POST \
-          -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
-          -H "Accept: application/vnd.github.everest-preview+json" \
-          -H "Content-Type: application/json" \
-          https://api.github.com/repos/zigbee2mqtt/hassio-zigbee2mqtt/dispatches \
-          --data "{\"event_type\": \"release\", \"client_payload\": { \"version\": \"$TAG-1\"}}"
     - name: "release: merge dev -> master and promote dev"
       if: startsWith(github.ref, 'refs/tags/') && github.event_name == 'push'  
       run: |
