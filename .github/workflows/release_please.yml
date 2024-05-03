@@ -30,7 +30,6 @@ jobs:
         id: release-helm
         with:
           target-branch: dev
-          skip-github-release: true
           release-type: helm
           token: ${{secrets.GH_TOKEN}}
 
