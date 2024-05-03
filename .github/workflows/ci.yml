@@ -17,6 +17,9 @@ jobs:
         token: ${{secrets.GH_TOKEN}}
     - uses: actions/checkout@v4
       if: ((github.ref == 'refs/heads/dev' || startsWith(github.ref, 'refs/tags/')) && github.event_name == 'push') == false
+      with:
+        # Required for `release: merge dev -> master and promote dev`
+        token: ${{secrets.GH_TOKEN}}
     - uses: actions/setup-node@v4
       with:
         node-version: 20
