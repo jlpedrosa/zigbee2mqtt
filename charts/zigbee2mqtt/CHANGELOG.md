@@ -1,0 +1,1 @@
+# Changelog for helm chart zigbee2mqtt
