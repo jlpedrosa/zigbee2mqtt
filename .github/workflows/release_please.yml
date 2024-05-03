@@ -31,7 +31,7 @@ jobs:
         with:
           target-branch: dev
           release-type: helm
-          path: charts/zigbee2mqtt
+          path: ./charts/zigbee2mqtt/Chart.yaml
           token: ${{secrets.GH_TOKEN}}
 
       # Checkout repos
