@@ -27,8 +27,8 @@ jobs:
           token: ${{secrets.GH_TOKEN}}
 
       # we use grep,awk,sed here because the output from release-please despite being JSON (probably shell-escaping), it's not valid and
-      # jq fails to parse it.
-      - name: get-branch-pr
+      # jq fails to parse it. Creates the output branch
+      - name: Get the branch of the release-please PR
         id: prbranch
         if: ${{ steps.release.outputs.prs_created == 'true'  }}
         run: |          
@@ -51,7 +51,7 @@ jobs:
           Z2M_VERSION="$(jq -r '."."' .release-please-manifest.json)"          
           yq -i ".appVersion=\"${Z2M_VERSION}\"" charts/zigbee2mqtt/Chart.yaml
           yq -i ".image.tag=\"${Z2M_VERSION}\"" charts/zigbee2mqtt/values.yaml
-          jq  ".\"charts/zigbee2mqtt\"=\"${Z2M_VERSION}\"" .release-please-manifest.json >> .release-please-manifest.json
+          jq  ".\"charts/zigbee2mqtt\"=\"${Z2M_VERSION}\"" .release-please-manifest.json > .release-please-manifest.json.tmp
           make helm-docs
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
