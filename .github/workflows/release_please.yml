@@ -28,7 +28,9 @@ jobs:
 
       - name: update-helm-chart-releases
         run:
-          echo ${{ steps.release.outputs.prs }}
+          echo "${{ steps.release.outputs.prs }}"
+          echo "${{ steps.release.outputs.*}} "
+          echo "${{ steps.release.outputs.* }}" | jq '.'
 
       # Checkout repos
       - uses: actions/checkout@v4
