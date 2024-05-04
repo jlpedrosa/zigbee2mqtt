@@ -26,6 +26,10 @@ jobs:
           target-branch: dev
           token: ${{secrets.GH_TOKEN}}
 
+      - name: update-helm-chart-releases
+        run:
+          echo ${{ steps.release.outputs.prs }}
+
       # Checkout repos
       - uses: actions/checkout@v4
         with:
@@ -36,6 +40,8 @@ jobs:
           repository: koenkk/zigbee2mqtt
           path: ./z2m-master
           ref: master
+
+
 
       - name: Restore cache commit-user-lookup.json
         uses: actions/cache/restore@v4
