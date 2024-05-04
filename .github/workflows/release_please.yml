@@ -30,6 +30,7 @@ jobs:
       # jq fails to parse it.
       - name: get-branch-pr
         id: prbranch
+        if: ${{ steps.release.outputs.release_created  }}
         run: |          
           echo '${{ steps.release.outputs.prs }}' | grep -o -P '\"headBranchName\":\"(.*?)\"' | awk -F':' '{print $2}' | tr -d \"
           BRANCH=$(echo '${{ steps.release.outputs.prs }}' | grep -o -P '\"headBranchName\":\"(.*?)\"' | awk -F':' '{print $2}' | tr -d \")
@@ -37,18 +38,19 @@ jobs:
 
       # Checkout PR branch
       - uses: actions/checkout@v4
-        if: ${{ steps.prbranch.outputs.branch != '' }}
+        if: ${{ steps.release.outputs.release_created }}
         with:
           repository: jlpedrosa/zigbee2mqtt
           path: ./z2m-pr
           ref: ${{ steps.prbranch.outputs.branch }}
 
       - name: update-chart-release
-        if: ${{ steps.prbranch.outputs.branch != '' }}
+        if: ${{ steps.release.outputs.release_created }}
         run: |
           pushd ./z2m-pr
-          yq -i ".appVersion=\"${{steps.release.outputs.tag_name}}\"" charts/zigbee2mqtt/Chart.yaml
-          yq -i ".image.tag=\"${{steps.release.outputs.tag_name}}\"" charts/zigbee2mqtt/values.yaml
+          VERSION="${{steps.release.outputs.major}}.${{steps.release.outputs.minor}}.${{steps.release.outputs.patch}}"
+          yq -i ".appVersion=\"${VERSION}\"" charts/zigbee2mqtt/Chart.yaml
+          yq -i ".image.tag=\"${VERSION}\"" charts/zigbee2mqtt/values.yaml
           make helm-docs
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -66,8 +68,6 @@ jobs:
           repository: koenkk/zigbee2mqtt
           path: ./z2m-master
           ref: master
-
-
 
       - name: Restore cache commit-user-lookup.json
         uses: actions/cache/restore@v4
