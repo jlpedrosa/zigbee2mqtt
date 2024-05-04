@@ -45,6 +45,7 @@ jobs:
       - name: update-chart-release
         run: |
           pushd ./z2m-pr
+          yq -i ".appVersion=\"${{steps.release.outputs.tag_name}}\"" charts/zigbee2mqtt/Chart.yaml
           make helm-docs
           git add .
           git commit -m "chore(release): update helm-chart docs"
