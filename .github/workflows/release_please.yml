@@ -31,8 +31,8 @@ jobs:
       - name: get-branch-pr
         id: prbranch
         run: |          
-          echo "${{ steps.release.outputs.prs }}" | grep -o -P '\"headBranchName\":\"(.*?)\"' | awk -F':' '{print $2}' | tr -d \"
-          BRANCH=$(echo "${{ steps.release.outputs.prs }}" | grep -o -P '\"headBranchName\":\"(.*?)\"' | awk -F':' '{print $2}' | tr -d \")
+          echo '${{ steps.release.outputs.prs }}' | grep -o -P '\"headBranchName\":\"(.*?)\"' | awk -F':' '{print $2}' | tr -d \"
+          BRANCH=$(echo '${{ steps.release.outputs.prs }}' | grep -o -P '\"headBranchName\":\"(.*?)\"' | awk -F':' '{print $2}' | tr -d \")
           echo "branch=${BRANCH}" >> $GITHUB_OUTPUT
 
       # Checkout PR branch
