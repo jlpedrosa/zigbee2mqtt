@@ -26,7 +26,7 @@ jobs:
           target-branch: dev
           token: ${{secrets.GH_TOKEN}}
 
-      # we use grep,awk,sed here because the output from release-please despite being JSON, it's not valid and
+      # we use grep,awk,sed here because the output from release-please despite being JSON (probably shell-escaping), it's not valid and
       # jq fails to parse it.
       - name: get-branch-pr
         id: prbranch
@@ -48,8 +48,8 @@ jobs:
         if: ${{ steps.release.outputs.prs_created == 'true'   }}
         run: |
           pushd ./z2m-pr
-          VERSION="${{steps.release.outputs.major}}.${{steps.release.outputs.minor}}.${{steps.release.outputs.patch}}"
-          yq -i ".appVersion=\"${VERSION}\"" charts/zigbee2mqtt/Chart.yaml
+          Z2M_VERSION="$(jq -r '."."' .release-please-manifest.json)"
+          yq -i ".appVersion=\"${Z2M_VERSION}\"" charts/zigbee2mqtt/Chart.yaml
           yq -i ".image.tag=\"${VERSION}\"" charts/zigbee2mqtt/values.yaml
           make helm-docs
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
