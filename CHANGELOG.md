@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.37.1](https://github.com/jlpedrosa/zigbee2mqtt/compare/1.37.0...1.37.1) (2024-05-04)
+
+
+### Bug Fixes
+
+* **ignore:** update zigbee-herdsman to 0.46.0 ([#22380](https://github.com/jlpedrosa/zigbee2mqtt/issues/22380)) ([55b5f91](https://github.com/jlpedrosa/zigbee2mqtt/commit/55b5f91a96f589fd0e3da5f4800dad32dbd57cf7))
+* **ignore:** update zigbee-herdsman-converters to 19.33.0 ([#22381](https://github.com/jlpedrosa/zigbee2mqtt/issues/22381)) ([907591c](https://github.com/jlpedrosa/zigbee2mqtt/commit/907591c467f926af172427ff641e7b20e5fa309c))
+* **ignore:** update zigbee2mqtt-frontend to 0.6.166 ([#22410](https://github.com/jlpedrosa/zigbee2mqtt/issues/22410)) ([5899436](https://github.com/jlpedrosa/zigbee2mqtt/commit/5899436d74cb0c67016758797c2e928f35715d9d))
+* **ignore:** update zigbee2mqtt-frontend to 0.6.167 ([#22419](https://github.com/jlpedrosa/zigbee2mqtt/issues/22419)) ([23e97d0](https://github.com/jlpedrosa/zigbee2mqtt/commit/23e97d0001048269662c6336a8aef6788615934c))
+
 ## [1.37.0](https://github.com/Koenkk/zigbee2mqtt/compare/1.36.1...1.37.0) (2024-05-01)
 
 
