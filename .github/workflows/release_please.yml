@@ -30,7 +30,7 @@ jobs:
       # jq fails to parse it.
       - name: get-branch-pr
         id: prbranch
-        if: ${{ steps.release.outputs.release_created  }}
+        if: ${{ steps.release.outputs.release_created == 'true'  }}
         run: |          
           echo '${{ steps.release.outputs.prs }}' | grep -o -P '\"headBranchName\":\"(.*?)\"' | awk -F':' '{print $2}' | tr -d \"
           BRANCH=$(echo '${{ steps.release.outputs.prs }}' | grep -o -P '\"headBranchName\":\"(.*?)\"' | awk -F':' '{print $2}' | tr -d \")
@@ -38,14 +38,14 @@ jobs:
 
       # Checkout PR branch
       - uses: actions/checkout@v4
-        if: ${{ steps.release.outputs.release_created }}
+        if: ${{ steps.release.outputs.release_created == 'true'   }}
         with:
           repository: jlpedrosa/zigbee2mqtt
           path: ./z2m-pr
           ref: ${{ steps.prbranch.outputs.branch }}
 
       - name: update-chart-release
-        if: ${{ steps.release.outputs.release_created }}
+        if: ${{ steps.release.outputs.release_created == 'true'   }}
         run: |
           pushd ./z2m-pr
           VERSION="${{steps.release.outputs.major}}.${{steps.release.outputs.minor}}.${{steps.release.outputs.patch}}"
