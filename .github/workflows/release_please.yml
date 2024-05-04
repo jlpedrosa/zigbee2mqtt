@@ -38,7 +38,7 @@ jobs:
       # Checkout PR branch
       - uses: actions/checkout@v4
         with:
-          repository: koenkk/zigbee2mqtt
+          repository: jlpedrosa/zigbee2mqtt
           path: ./z2m-pr
           ref: ${{ steps.prbranch.outputs.branch }}
 
