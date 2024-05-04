@@ -26,11 +26,18 @@ jobs:
           target-branch: dev
           token: ${{secrets.GH_TOKEN}}
 
-      - name: update-helm-chart-releases
+      - name: get-branch-pr
+        id: prbranch
         run: |
-          echo "${{ steps.release.outputs.prs }}"
-          echo "${{ steps.release.outputs.*}} "
-          echo "${{ steps.release.outputs.* }}" | jq '.'
+          echo "${{ steps.release.outputs.prs }}" | jq -r '.[] | .headBranchName' 
+          echo "branch=test" >> $GITHUB_OUTPUT
+
+      # Checkout PR branch
+      - uses: actions/checkout@v4
+        with:
+          repository: koenkk/zigbee2mqtt
+          path: ./z2m-pr
+          ref: ${{ steps.prbranch.outputs.branch }}
 
       # Checkout repos
       - uses: actions/checkout@v4
