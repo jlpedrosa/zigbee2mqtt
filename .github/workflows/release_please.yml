@@ -27,7 +27,7 @@ jobs:
           token: ${{secrets.GH_TOKEN}}
 
       - name: update-helm-chart-releases
-        run:
+        run: |
           echo "${{ steps.release.outputs.prs }}"
           echo "${{ steps.release.outputs.*}} "
           echo "${{ steps.release.outputs.* }}" | jq '.'
