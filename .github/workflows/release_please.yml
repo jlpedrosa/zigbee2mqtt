@@ -48,10 +48,11 @@ jobs:
         if: ${{ steps.release.outputs.prs_created == 'true'   }}
         run: |
           pushd ./z2m-pr
-          Z2M_VERSION="$(jq -r '."."' .release-please-manifest.json)"          
+          Z2M_VERSION="$(jq -r '."."' .release-please-manifest.json)" 
           yq -i ".appVersion=\"${Z2M_VERSION}\"" charts/zigbee2mqtt/Chart.yaml
           yq -i ".image.tag=\"${Z2M_VERSION}\"" charts/zigbee2mqtt/values.yaml
-          jq  ".\"charts/zigbee2mqtt\"=\"${Z2M_VERSION}\"" .release-please-manifest.json > .release-please-manifest.json.tmp
+          # Keep chart version in step lock with zigbee2mqtt
+          jq  ".\"charts/zigbee2mqtt\"=\"${Z2M_VERSION}\"" .release-please-manifest.json > .release-please-manifest.json
           make helm-docs
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
