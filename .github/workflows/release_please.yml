@@ -37,16 +37,21 @@ jobs:
 
       # Checkout PR branch
       - uses: actions/checkout@v4
+        if: ${{ steps.prbranch.outputs.branch != '' }}
         with:
           repository: jlpedrosa/zigbee2mqtt
           path: ./z2m-pr
           ref: ${{ steps.prbranch.outputs.branch }}
 
       - name: update-chart-release
+        if: ${{ steps.prbranch.outputs.branch != '' }}
         run: |
           pushd ./z2m-pr
           yq -i ".appVersion=\"${{steps.release.outputs.tag_name}}\"" charts/zigbee2mqtt/Chart.yaml
+          yq -i ".image.tag=\"${{steps.release.outputs.tag_name}}\"" charts/zigbee2mqtt/values.yaml
           make helm-docs
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
           git add .
           git commit -m "chore(release): update helm-chart docs"
           git push
