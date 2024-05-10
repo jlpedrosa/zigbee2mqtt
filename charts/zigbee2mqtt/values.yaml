@@ -194,6 +194,8 @@ ingress:
       paths:
         - path: /
           pathType: ImplementationSpecific
+        - path: /api
+          pathType: ImplementationSpecific
   # -- Ingress implementation specific (potentially) for most use cases Prefix should be ok
   pathType: Prefix
   # Additional annotations for the ingress. ExternalDNS, and CertManager are tipically integrated here
