@@ -188,6 +188,10 @@ ingress:
   ingressClassName: contour
   # -- Additional labels for the ingres
   labels: {}
+  # -- Ingress implementation specific (potentially) for most use cases Prefix should be ok
+  pathType: Prefix
+  # Additional annotations for the ingress. ExternalDNS, and CertManager are tipically integrated here
+  annotations: { }
   # -- list of hosts that should be allowed for the zigbee2mqtt service
   hosts:
     - host: chart-example.local
@@ -196,10 +200,6 @@ ingress:
           pathType: ImplementationSpecific
         - path: /api
           pathType: ImplementationSpecific
-  # -- Ingress implementation specific (potentially) for most use cases Prefix should be ok
-  pathType: Prefix
-  # Additional annotations for the ingress. ExternalDNS, and CertManager are tipically integrated here
-  annotations: {}
   # -- configuration for tls service (ig any)
   tls:
     - secretName: some-tls-secret
